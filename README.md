@@ -11,12 +11,12 @@ pip install pyvectorizer
 ## Usage
 
 ```python
-from pyvectorizer import is_vectorizable
+from pyvectorizer import analyze_vectorization
 
 code = '''
 for i in range(len(a)):
     a[i] = b[i] + c[i]
 '''
 
-print(is_vectorizable(code))  # True or False
+print(analyze_vectorization(code))  # analysis result
 ```
