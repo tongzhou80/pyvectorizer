@@ -7,7 +7,7 @@ from typing import Optional, Union
 class VectorizationResult:
     is_vectorizable: bool
     fail_reason: Optional[str] = None
-    vector_length: Optional[int] = None 
+    safe_vector_length: Optional[int] = None 
 
 class AugAssignExpander(ast.NodeTransformer):
     def visit_AugAssign(self, node):

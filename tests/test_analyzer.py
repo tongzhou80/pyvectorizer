@@ -71,5 +71,14 @@ for i in range(10):
         result = analyze_vectorization(code)
         self.assertTrue(result.is_vectorizable)
 
+    def test_scalar(self):
+        code = """
+for i in range(10):
+    x = s + a[i]
+    s = x
+"""
+        result = analyze_vectorization(code)
+        self.assertTrue(result.is_vectorizable)
+
 if __name__ == '__main__':
     unittest.main()
