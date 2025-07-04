@@ -70,6 +70,17 @@ for i in range(len(a)):
 ... = x
 ```
 
+The unrolled execution of the loop looks like this:
+
+```python
+x = b[0] + c[0] # S0
+
+x = b[1] + c[1] # S2
+
+... = x
+```
+Now S0 and S2 cannot be reordered, because their order will affect what value of `x` will be read afterwards.
+
 Being used outside of its own iteration can also mean being used in other iterations, like this:
 
 ```python    
@@ -110,5 +121,7 @@ for i in range(len(a)):
         x = b[i] + c[i]
     a[i] = x
 ```
+
+Besides, check if there usage of `x` after the loop.
 
 Check if this is True with Jun.
