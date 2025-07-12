@@ -7,7 +7,7 @@ from typing import Optional, Union
 class VectorizationResult:
     is_vectorizable: bool
     fail_reason: Optional[str] = None
-    dependencies: list = None
+    dependences: list = None
 
 class AugAssignExpander(ast.NodeTransformer):
     def visit_AugAssign(self, node):
@@ -50,7 +50,6 @@ def analyze_vectorization(code_or_ast: Union[str, ast.AST]) -> VectorizationResu
     
     # get the index var of loop `tree`
     index_var = tree.target.id
-
     from .passes import has_assign_to_name_x
     if has_assign_to_name_x.analyze(tree, index_var):
         return VectorizationResult(is_vectorizable=False, fail_reason="Assign to index var")
@@ -64,6 +63,12 @@ def analyze_vectorization(code_or_ast: Union[str, ast.AST]) -> VectorizationResu
     unrecognized_calls = check_for_uncognized_calls.analyze(tree, SAFE_FUNCS, SAFE_PACKAGES)
     if unrecognized_calls:
         return VectorizationResult(is_vectorizable=False, fail_reason=f"Unrecognized calls: {', '.join(unrecognized_calls)}")
+    
+    from .passes import check_for_multi_dim_subscripts
+    if check_for_multi_dim_subscripts.analyze(tree):
+        return VectorizationResult(is_vectorizable=False, fail_reason="Multi-dimensional subscripts")
+    
+    # Perform dependence analysis
 
     return VectorizationResult(is_vectorizable=True)
 

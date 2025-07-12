@@ -23,6 +23,8 @@ print(analyze_vectorization(code))  # analysis result
 
 ## Auto Vectorization
 
+Guiding principle: this transformation is guaranteed safe for all cases and attempts to optimize for common cases.
+
 We first rule out input loops that are not in ``proper`` form:
 
 * Loop must be a ``for`` loop over ``range(...)``
